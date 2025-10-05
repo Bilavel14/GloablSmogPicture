@@ -1,18 +1,14 @@
-import os
-from flask import Flask, render_template
+import streamlit as st
+from pathlib import Path
 
-app = Flask(__name__, template_folder="templates", static_folder="static")
+# --- Page settings ---
+st.set_page_config(page_title="Air Quality Dashboard",
+                   layout="wide")
 
-@app.route("/")
-def index():
-    # / -> renders your merged dashboard page
-    return render_template("index.html")
-
-@app.route("/Smog_Circular_Dashboard.html")
-def smog_circular():
-    # keeps your existing iframe/link working if it points to this filename
-    return render_template("Smog_Circular_Dashboard.html")
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    app.run(host="0.0.0.0", port=port)
+# --- Load HTML dashboard ---
+html_path = Path("index.html")
+if html_path.exists():
+    html_content = html_path.read_text(encoding="utf-8")
+    st.components.v1.html(html_content, height=2200, scrolling=True)
+else:
+    st.error("index.html not found. Please add it to the project folder.")
