@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Air Quality Dashboards — Smog • AOD • PM₂.₅</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#0b57d0;
+    --ink:#1f2937;
+    --muted:#6b7280;
+    --card:#ffffff;
+    --bg:#f7f9fc;
+    --border:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:15px/1.45 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica, "Noto Sans", "Liberation Sans", sans-serif;
+  }
+  .topbar{
+    background:var(--brand); color:#fff; padding:14px 18px; display:flex; align-items:center; gap:14px;
+    position:sticky; top:0; z-index:20; box-shadow:0 2px 8px rgba(17,24,39,.12);
+  }
+  .topbar h1{margin:0; font-size:18px; font-weight:700; letter-spacing:.2px}
+  .container{max-width:1280px; margin:18px auto; padding:0 16px}
+  .tabs{display:flex; gap:8px; flex-wrap:wrap}
+  .tab-btn{
+    border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:10px; cursor:pointer;
+    color:var(--ink); box-shadow:0 1px 1px rgba(0,0,0,.03); font-weight:600;
+  }
+  .tab-btn.active{background:var(--brand); color:#fff; border-color:var(--brand)}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px; margin-top:12px}
+  .iframe-wrap{width:100%; height:84vh; min-height:720px; border:1px solid var(--border); border-radius:12px; overflow:hidden}
+  .iframe-wrap iframe{width:100%; height:100%; border:0}
+  .meta{color:var(--muted); font-size:12px; margin-top:8px}
+  .footer{color:var(--muted); font-size:12px; text-align:center; padding:24px 0 40px}
+  .actions{display:flex; gap:8px; justify-content:flex-end; margin:8px 0}
+  .btn{border:1px solid var(--border); background:#fff; padding:8px 10px; border-radius:8px; cursor:pointer; font-size:13px}
+  .btn:hover{border-color:#cbd5e1}
+  /* Secondary tabs (inside second page) */
+  .subtabs{display:flex; gap:6px; margin:6px 4px 10px}
+  .sub-btn{border:1px solid var(--border); background:#fff; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:13px}
+  .sub-btn.active{background:#0b57d0; color:#fff; border-color:#0b57d0}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Air Quality Dashboards — Smog • AOD • PM₂.₅</h1>
+  </div>
+
+  <div class="container">
+    <div class="tabs" role="tablist" aria-label="Dashboards">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-smog" id="btn-smog">Smog Circular Dashboard</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-main" id="btn-main">National &amp; Global (AOD &amp; PM₂.₅)</button>
+    </div>
+
+    <!-- ========== PAGE 1: Smog circular (first page) ========== -->
+    <section id="tab-smog" class="card" role="tabpanel" aria-labelledby="btn-smog">
+      <div class="actions">
+        <button class="btn" onclick="toggleFull('frame-smog')">Toggle full screen</button>
+      </div>
+      <div class="iframe-wrap" id="wrap-smog">
+        <iframe id="frame-smog" src="Smog_Circular_Dashboard.html" title="Smog Events — Circular Dashboard" loading="lazy"></iframe>
+      </div>
+      <div class="meta">First page: circular one‑pager of historic smog disasters (self‑contained HTML).</div>
+    </section>
+
+    <!-- ========== PAGE 2: NDMA AOD + Global PM2.5 (second page) ========== -->
+    <section id="tab-main" class="card" style="display:none" role="tabpanel" aria-labelledby="btn-main">
+      <div class="subtabs" role="tablist" aria-label="Sub dashboards">
+        <button class="sub-btn active" role="tab" aria-selected="true" aria-controls="sub-aod" id="subbtn-aod">Pakistan AOD (NDMA)</button>
+        <button class="sub-btn" role="tab" aria-selected="false" aria-controls="sub-pm25" id="subbtn-pm25">Global PM₂.₅ (UN style)</button>
+      </div>
+      <div id="sub-aod" role="tabpanel" aria-labelledby="subbtn-aod">
+        <div class="actions">
+          <button class="btn" onclick="toggleFull('frame-aod')">Toggle full screen</button>
+        </div>
+        <div class="iframe-wrap" id="wrap-aod">
+          <iframe id="frame-aod" src="NDMA_Pakistan_AOD_Dashboard.html" title="NDMA Pakistan AOD Dashboard" loading="lazy"></iframe>
+        </div>
+        <div class="meta">Source: NDMA — Pakistan Smog (AOD) Dashboard (uploaded file).</div>
+      </div>
+
+      <div id="sub-pm25" style="display:none" role="tabpanel" aria-labelledby="subbtn-pm25">
+        <div class="actions">
+          <button class="btn" onclick="toggleFull('frame-pm25')">Toggle full screen</button>
+        </div>
+        <div class="iframe-wrap" id="wrap-pm25">
+          <iframe id="frame-pm25" src="PM25_UN_Dashboard.html" title="Global PM₂.₅ Dashboard" loading="lazy"></iframe>
+        </div>
+        <div class="meta">Source: Global PM₂.₅ Dashboard (UN-style, uploaded file).</div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Keep this <strong>index.html</strong> in the same folder as:<br/>
+      <code>Smog_Circular_Dashboard.html</code> • <code>NDMA_Pakistan_AOD_Dashboard.html</code> • <code>PM25_UN_Dashboard.html</code>.
+    </div>
+  </div>
+
+<script>
+  // Primary tabs (pages)
+  const smogBtn = document.getElementById('btn-smog');
+  const mainBtn = document.getElementById('btn-main');
+  const tabSmog = document.getElementById('tab-smog');
+  const tabMain = document.getElementById('tab-main');
+
+  function setPage(which){
+    const isSmog = which === 'smog';
+    tabSmog.style.display = isSmog ? 'block' : 'none';
+    tabMain.style.display = isSmog ? 'none' : 'block';
+    smogBtn.classList.toggle('active', isSmog);
+    mainBtn.classList.toggle('active', !isSmog);
+    smogBtn.setAttribute('aria-selected', isSmog);
+    mainBtn.setAttribute('aria-selected', !isSmog);
+    // Scroll to top for neatness
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  smogBtn.addEventListener('click', ()=>setPage('smog'));
+  mainBtn.addEventListener('click', ()=>setPage('main'));
+
+  // Secondary tabs inside second page
+  const subAodBtn = document.getElementById('subbtn-aod');
+  const subPmBtn  = document.getElementById('subbtn-pm25');
+  const subA      = document.getElementById('sub-aod');
+  const subP      = document.getElementById('sub-pm25');
+
+  function setSub(which){
+    const isA = which === 'aod';
+    subA.style.display = isA ? 'block':'none';
+    subP.style.display = isA ? 'none':'block';
+    subAodBtn.classList.toggle('active', isA);
+    subPmBtn.classList.toggle('active', !isA);
+    subAodBtn.setAttribute('aria-selected', isA);
+    subPmBtn.setAttribute('aria-selected', !isA);
+  }
+  subAodBtn.addEventListener('click', ()=>setSub('aod'));
+  subPmBtn.addEventListener('click',  ()=>setSub('pm'));
+
+  function toggleFull(frameId){
+    const wrap = document.getElementById(frameId).parentElement;
+    if (wrap.style.height === '92vh'){ wrap.style.height = '84vh'; }
+    else { wrap.style.height = '92vh'; }
+  }
+</script>
+</body>
+</html>
